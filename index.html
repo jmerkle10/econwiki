@@ -27,7 +27,7 @@
 
 <!-- use "theme-invert" class on bright backgrounds, also try "text-shadows" class -->
 
-<body class="theme-invert">
+<body ng-app="Wiki" ng-controller="MainCtrl" class="theme-invert">
 
   <nav class="mainmenu">
     <div class="container">
@@ -76,35 +76,55 @@
   <!-- Second (Forum) section -->
   <section class="section" id="forum">
 
-    <div class='col-sm-10 text-center'>
-      <div id='search'>
-        Search
-        <input type="text" id="partial" ng-keyup="searchForum()"></input>
-
-
-        <form ng-submit="addPost()" style="margin-top30px;">
-
-          <div>
-            <input type="text" ng-model="formTitle"></input>
-          </div>
-
-          <div>
-            <input type="text" ng-model="formContent"></input>
-          </div>
-          <button type="submit">Post</button>
-        </form>
-
-        <div ng-repeat="post in posts">
-          <a href="#/posts/{{posts.indexOf(post).title}}">{{post.title}}</a>
-        </div>
-
-      </div>
-
-
-
-    </div>
+		<ui-view></ui-view>
 
   </section>
+    <script type="text/ng-template" id="/forum.html">
+      <div class='col-sm-10 text-center'>
+        <div id='search'>
+          <!-- Search
+          <input type="text" id="partial" ng-keyup="searchForum($event)"></input> -->
+          <form ng-submit="addPost()" style="margin-top30px;">
+            <div>
+              <input type="text" ng-model="formTitle"></input>
+            </div>
+            <div>
+              <input type="text" ng-model="formContent"></input>
+            </div>
+            <button type="submit">Post</button>
+          </form>
+          <div ng-repeat="post in posts">
+            <a href="#/posts/{{posts.indexOf(post)}}">{{post.title}}</a>
+          </div>
+        </div>
+      </div>
+    </script>
+		<script>
+
+		</script>
+
+    <script type="text/ng-template" id="/posts.html">
+      <div class="page-header">
+        <h3>
+	          {{post.title}}
+	      </h3>
+      </div>
+      <div ng-repeat="comment in post.comments">
+        <span style="font-size:20px; margin-left:10px;">
+	        {{comment.body}}
+	      </span>
+      </div>
+      <form ng-submit="addComment()" style="margin-top:30px;">
+        <h3>Add a new comment</h3>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Comment" ng-model="body"></input>
+        </div>
+        <button type="submit" class="btn btn-primary">Post</button>
+      </form>
+    </script>
+
+
+
 
   <!-- Third (Works) section -->
   <section class="section" id="themes">
