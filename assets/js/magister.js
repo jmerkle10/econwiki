@@ -24,3 +24,65 @@ jQuery(document).ready(function($) {
 		return false;
 	});		
 });
+
+angular.module('Wiki', ['ui.router'])
+.config([
+'$stateProvider',
+'$urlRouterProvider',
+function($stateProvider, $urlRouterProvider) {
+  $stateProvider
+    .state('forum', {
+      url: '/forum',
+      templateUrl: '/forum.html',
+      controller: 'MainCtrl'
+    })
+    .state('posts', {
+      url: '/posts/{id}',
+      templateUrl: '/posts.html',
+      controller: 'PostsCtrl'
+    });
+
+  $urlRouterProvider.otherwise('forum');
+}]) 
+.factory('postFactory', [function(){
+  var o = {
+    posts: []
+  };
+  return o;
+}])
+.controller('MainCtrl', [
+'$scope',
+'postFactory',
+function($scope, postFactory){
+  $scope.test = 'Hello world!';
+
+  $scope.posts = postFactory.posts;
+
+  $scope.addPost = function(){
+    if($scope.formContent === '') { return; }
+    $scope.posts.push({
+      title: $scope.formTitle,
+      content: $scope.formContent,
+      comments: []
+    });
+    $scope.formContent = '';
+  };
+
+}])
+.controller('PostsCtrl', [
+'$scope',
+'$stateParams',
+'postFactory',
+function($scope, $stateParams, postFactory){
+  $scope.post = postFactory.posts[$stateParams.id];
+  
+  $scope.addComment = function(){
+    if($scope.body === '') { return; }
+    $scope.post.comments.push({
+      body: $scope.body,
+    });
+    $scope.body = '';
+  };
+
+}]);
+
