@@ -53,7 +53,7 @@ angular.module('Wiki', ['ui.router']).config([
     $scope.test = 'Hello world!';
     $scope.posts = postFactory.posts;
     $scope.addPost = function() {
-      if ($scope.formContent === '') {
+      if ($scope.formContent === '' || $scope.formTitle === '') {
         return;
       }
       $scope.posts.push({
